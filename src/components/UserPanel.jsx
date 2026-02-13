@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { UserFilters } from "./UserFilter";
 
 
 export const UserPanel = () => {
+  
 const config = {
     showOnlyActive: true,
     highlightRole: "Frontend",
@@ -67,32 +69,43 @@ const config = {
   }
 ];
 
+// Desestructuraciond de config
 const { showOnlyActive, highlightRole, sortBy} = config
-const {id, name, role, active, seniority} = users
-
-
+// Estados
+const [active, setActive] = useState(showOnlyActive)
+const [role, setRole] = useState(highlightRole)
+const [sort, setSort] = useState(sortBy)
 
 const filterActive = (data,showOnlyActive) =>{
     if(!showOnlyActive) return data;
     return data.filter(user => user.active)
 }
 
-const sortUsers = (data,sortBy) =>{
+const sortUsers = (data,sort) =>{
     const copy = [...data]
   
-    console.log(sortBy)
-    if(sortBy === "name") return copy.sort()
-    if(sortBy === "seniority") return copy.sort((a,b) => a.seniority-b.seniority)
+    // console.log(sort)
+    if(sort === "name") return copy.sort()
+    if(sort === "seniority") return copy.sort((a,b) => a.seniority-b.seniority)
 }
 
 
 const filteredUsers = filterActive(users,showOnlyActive)
 
-console.log(sortUsers(users,sortBy))
+// console.log(sortUsers(users,sortBy))
 
 return (
 <>
-  <UserFilters {...config}/>
+  <UserFilters 
+    {...config}
+    active = {active}
+    setActive = {setActive}
+    role = {role}
+    setRole = {setRole}
+    sort = {sort}
+    setSort = {setSort}
+
+  />
   <br />
 
 

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { UserFilters } from "./UserFilter";
+import { UserList } from "./UserList";
+import { UserCard } from "./UserCard";
+
 
 
 export const UserPanel = () => {
@@ -35,7 +38,7 @@ const config = {
   {
     id: 4,
     name: "Diego Fernández",
-    role: "DevOps",
+    role: "Backend",
     active: true,
     seniority: 7
   },
@@ -56,7 +59,7 @@ const config = {
   {
     id: 7,
     name: "Gabriela Torres",
-    role: "QA",
+    role: "Frontend",
     active: true,
     seniority: 6
   },
@@ -76,23 +79,43 @@ const [active, setActive] = useState(showOnlyActive)
 const [role, setRole] = useState(highlightRole)
 const [sort, setSort] = useState(sortBy)
 
-const filterActive = (data,showOnlyActive) =>{
-    if(!showOnlyActive) return data;
-    return data.filter(user => user.active)
-}
 
-const sortUsers = (data,sort) =>{
-    const copy = [...data]
-  
-    // console.log(sort)
-    if(sort === "name") return copy.sort()
-    if(sort === "seniority") return copy.sort((a,b) => a.seniority-b.seniority)
-}
+const sortUsers = (data, active, rol, sort) =>{
+    let copy = [...data]
+    console.log(copy)
+
+    if(active == true){
+      copy = copy.filter(user=> user.active)
+    }
+    console.log(copy)
+    
+    if(role == "Frontend"){
+      copy = copy.filter(user => user.role == "Frontend")
+    } else if(role == "Backend"){
+      copy = copy.filter(user =>user.role == "Backend")
+    }
+
+    
+    if(sort == "name"){
+      copy.sort()
+    } else if (sort == "seniority"){
+      copy.sort((a,b) => a.seniority-b.seniority)
+    }
 
 
-const filteredUsers = filterActive(users,showOnlyActive)
+    
+    return copy
 
-// console.log(sortUsers(users,sortBy))
+    // if(sort === "name") return copy.sort()
+    // if(sort === "seniority") return copy.sort((a,b) => a.seniority-b.seniority)
+    
+    }
+
+
+const filteredUsers = sortUsers(users,active, role, sort,)
+
+
+console.log(sortUsers(users,active,role,sort))
 
 return (
 <>
@@ -104,18 +127,21 @@ return (
     setRole = {setRole}
     sort = {sort}
     setSort = {setSort}
-
   />
   <br />
 
 
 
 
-  { /*Renderizado implementando el filtro de usuarios activos
+ {/* /*Renderizado implementando el filtro de usuarios activos */}
+  <UserList
+  filteredUsers = {filteredUsers}
+  
+  />
+   {/* {filteredUsers.map(user =>(
 
-   {filteredUsers.map(user =>(
     <p key ={user.id}>
-        {user.name} - {user.role}
+        {user.name} - {user.role} - {user.seniority}
     </p>
 ))} */}
 </>

@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { UserFilters } from "./UserFilter";
 import { UserList } from "./UserList";
-import { UserCard } from "./UserCard";
-
-
 
 export const UserPanel = () => {
   
+// Objeto config
 const config = {
     showOnlyActive: true,
     highlightRole: "Frontend",
     sortBy: "name" // "name" | "seniority"
-  };
+};
 
-  const users = [
+// Lista de usuarios
+const users = [
   {
     id: 1,
     name: "Ana Martínez",
@@ -74,51 +73,41 @@ const config = {
 
 // Desestructuraciond de config
 const { showOnlyActive, highlightRole, sortBy} = config
+
 // Estados
 const [active, setActive] = useState(showOnlyActive)
 const [role, setRole] = useState(highlightRole)
 const [sort, setSort] = useState(sortBy)
 
+// Declaracion de filtrado de usuarios
+const applyFilters = (data, active, role, sort) =>{
+  let copy = [...data]
 
-const sortUsers = (data, active, rol, sort) =>{
-    let copy = [...data]
-    console.log(copy)
+  if(active == true){
+    copy = copy.filter(user=> user.active)
+  }
+  
+  if(role == "Frontend"){
+    copy = copy.filter(user => user.role == "Frontend")
+  } else if(role == "Backend"){
+    copy = copy.filter(user =>user.role == "Backend")
+  }
 
-    if(active == true){
-      copy = copy.filter(user=> user.active)
-    }
-    console.log(copy)
-    
-    if(role == "Frontend"){
-      copy = copy.filter(user => user.role == "Frontend")
-    } else if(role == "Backend"){
-      copy = copy.filter(user =>user.role == "Backend")
-    }
+  if(sort == "name"){
+    copy.sort()
+  } else if (sort == "seniority"){
+    copy.sort((a,b) => a.seniority-b.seniority)
+  }
 
-    
-    if(sort == "name"){
-      copy.sort()
-    } else if (sort == "seniority"){
-      copy.sort((a,b) => a.seniority-b.seniority)
-    }
+  return copy
+  }
 
-
-    
-    return copy
-
-    // if(sort === "name") return copy.sort()
-    // if(sort === "seniority") return copy.sort((a,b) => a.seniority-b.seniority)
-    
-    }
-
-
-const filteredUsers = sortUsers(users,active, role, sort,)
-
-
-console.log(sortUsers(users,active,role,sort))
+// Ejecucion de filtrado de usuarios
+const filteredUsers = applyFilters(users,active, role, sort,)
 
 return (
 <>
+{/* Interfaz de config y sus estados */}
   <UserFilters 
     {...config}
     active = {active}
@@ -130,20 +119,9 @@ return (
   />
   <br />
 
-
-
-
  {/* /*Renderizado implementando el filtro de usuarios activos */}
   <UserList
   filteredUsers = {filteredUsers}
-  
   />
-   {/* {filteredUsers.map(user =>(
-
-    <p key ={user.id}>
-        {user.name} - {user.role} - {user.seniority}
-    </p>
-))} */}
 </>
-)
-}
+)}

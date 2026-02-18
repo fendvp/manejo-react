@@ -1,5 +1,4 @@
-export const UserCard = ({id,name,role,active,seniority}) => {
-  console.log(id)
+export const UserCard = ({name,role,active,seniority}) => {
   return (
 <>
   <div>
@@ -7,7 +6,7 @@ export const UserCard = ({id,name,role,active,seniority}) => {
     <p>Rol: {role}</p>
     <p>Seniority: {seniority}</p>
   </div>
-  <br /><br />
+  <br />
 </>
 )
 }

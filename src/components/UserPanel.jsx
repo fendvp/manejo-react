@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserFilters } from "./UserFilter";
 import { UserList } from "./UserList";
+import { UserForm } from "./UserForm";
 
 export const UserPanel = () => {
   
@@ -78,6 +79,40 @@ const { showOnlyActive, highlightRole, sortBy} = config
 const [active, setActive] = useState(showOnlyActive)
 const [role, setRole] = useState(highlightRole)
 const [sort, setSort] = useState(sortBy)
+const [usersArray, setUsersArray] = useState(users)
+const [newName, setNewName] = useState("")
+const [newRol, setNewRol] = useState("")
+const [newSeniority, setNewSeniority] = useState(0)
+
+
+
+
+
+// Array de prueba para gestion de usuario
+const [prueba, setPrueba] = useState([])
+
+// Funcion de creacion de usuarios
+const createUser = (e) =>{
+  e.preventDefault()
+  let newUser = {
+    id : 9,
+    name: newName,
+    role: newRol,
+    active: true,
+    seniority: newSeniority
+  }
+  console.log("Usuario creado correctamente")
+  console.log(newUser)
+  setUsersArray([...usersArray, newUser])
+
+}
+
+  useEffect(()=>{
+    console.log(usersArray)
+  })
+
+
+
 
 // Declaracion de filtrado de usuarios
 const applyFilters = (data, active, role, sort) =>{
@@ -103,10 +138,21 @@ const applyFilters = (data, active, role, sort) =>{
   }
 
 // Ejecucion de filtrado de usuarios
-const filteredUsers = applyFilters(users,active, role, sort,)
+const filteredUsers = applyFilters(usersArray,active, role, sort)
 
 return (
 <>
+{/* Formulario de creacion de usuarios */}
+  <UserForm
+  createUser = {createUser}
+  newName = {newName}
+  setNewName = {setNewName}
+  newRol = {newRol}
+  setNewRol = {setNewRol}
+  newSeniority = {newSeniority}
+  setNewSeniority = {setNewSeniority}
+  />
+
 {/* Interfaz de config y sus estados */}
   <UserFilters 
     {...config}

@@ -94,8 +94,9 @@ const [prueba, setPrueba] = useState([])
 // Funcion de creacion de usuarios
 const createUser = (e) =>{
   e.preventDefault()
+  console.clear()
   let newUser = {
-    id : 9,
+    id : usersArray.length+1,
     name: newName,
     role: newRol,
     active: true,
